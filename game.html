@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>3D STACK</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="hud" id="ui">
+  <div class="hud-top">
+    <div class="title">
+      <span class="material-icons">view_in_ar</span>
+      3D STACK
+    </div>
+    <div class="score-box" id="scoreBox">
+      <span class="material-icons">emoji_events</span>
+      <span id="scoreValue">0</span>
+    </div>
+  </div>
+
+  <div class="hint">
+    <span class="material-icons">touch_app</span>
+    Tap or Press Space
+  </div>
+
+  <div id="feedback"></div>
+</div>
+
+<div class="overlay hidden" id="gameOver">
+  <div class="overlay-box">
+    <h2>Game Over</h2>
+    <p id="finalScore">Your Score: 0</p>
+    <button onclick="restartGame()">
+      <span class="material-icons">refresh</span> Restart
+    </button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

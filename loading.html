@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D STACK</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loadingScreen">
+  <div class="glass-panel">
+    <div class="liquid blob1"></div>
+    <div class="liquid blob2"></div>
+
+    <div class="ring"></div>
+
+    <h1>3D STACK</h1>
+    <div class="loading-text">
+      Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+<script src="main.js"></script>
+<script>
+setTimeout(() => {
+  window.location.href = "Game.html";
+}, 5000);
+</script>
+</body>
+</html>
