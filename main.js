@@ -2,7 +2,7 @@ let scene, camera, renderer;
 let stack = [];
 let movingBlock;
 
-let speed = 0.1;
+let speed = 0.075;
 let direction = 1;
 let score = 0;
 let combo = 0;
@@ -14,6 +14,9 @@ let blockWidth = 5;
 
 const feedback = document.getElementById("feedback");
 const loadingScreen = document.getElementById("loadingScreen");
+const hitSound = document.getElementById("hitSound");
+const perfectSound = document.getElementById("perfectSound");
+const badSound = document.getElementById("badSound");
 
 if (loadingScreen) {
   setTimeout(() => {
@@ -23,6 +26,16 @@ if (loadingScreen) {
     setTimeout(() => loadingScreen.remove(), 600);
   }, 5000);
 }
+
+window.addEventListener("load", () => {
+  document.body.classList.add("game-bg");
+});
+
+document.addEventListener("click", () => {
+  hitSound?.play();
+  perfectSound?.play();
+  badSound?.play();
+}, { once: true });
 
 init();
 animate();
@@ -121,16 +134,25 @@ function dropBlock() {
 }
 
 function handleHit(delta, overlap) {
+
   let hitType = "GOOD";
 
   if (Math.abs(delta) < 0.15) {
     hitType = "PERFECT";
     combo++;
-  } else if (overlap < blockWidth * 0.4) {
+    perfectSound.currentTime = 0;
+    perfectSound.play();
+  } 
+  else if (overlap < blockWidth * 0.4) {
     hitType = "BAD";
     combo = 0;
-  } else {
+    badSound.currentTime = 0;
+    badSound.play();
+  } 
+  else {
     combo = 0;
+    hitSound.currentTime = 0;
+    hitSound.play();
   }
 
   showFeedback(hitType);
