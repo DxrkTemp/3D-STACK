@@ -7,6 +7,8 @@ let direction = 1;
 let score = 0;
 let combo = 0;
 let gameOver = false;
+let fallingBlocks = [];
+const gravity = 0.002;
 
 const blockHeight = 1;
 const blockDepth = 5;
@@ -88,7 +90,9 @@ function setupControls() {
 }
 
 function animate() {
+
   if (!gameOver) updateMovingBlock();
+  updateFallingBlocks();
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
 }
@@ -159,9 +163,52 @@ function handleHit(delta, overlap) {
   updateScore();
 }
 
+function updateFallingBlocks() {
+
+  for (let i = fallingBlocks.length - 1; i >= 0; i--) {
+
+    const block = fallingBlocks[i];
+    block.userData.velocityY -= gravity;
+    block.position.y += block.userData.velocityY;
+    block.rotation.z += 0.02;
+
+    if (block.position.y < -20) {
+      scene.remove(block);
+      fallingBlocks.splice(i, 1);
+
+    }
+  }
+}
+
 function updateBlock(overlap, delta) {
+
+  const originalWidth = movingBlock.geometry.parameters.width;
+
+  const cutSize = originalWidth - overlap;
+
+  const cutDirection = delta > 0 ? 1 : -1;
+
+  if (cutSize > 0) {
+
+    const fallingGeometry = new THREE.BoxGeometry(cutSize, blockHeight, blockDepth);
+    const fallingMaterial = movingBlock.material.clone();
+    const fallingBlock = new THREE.Mesh(fallingGeometry, fallingMaterial);
+
+    fallingBlock.position.set(
+      movingBlock.position.x + (overlap / 2 + cutSize / 2) * cutDirection,
+      movingBlock.position.y,
+      movingBlock.position.z
+
+    );
+
+    fallingBlock.userData.velocityY = 0;
+    scene.add(fallingBlock);
+    fallingBlocks.push(fallingBlock);
+
+  }
+
   blockWidth = overlap;
-  movingBlock.scale.x = overlap / movingBlock.geometry.parameters.width;
+  movingBlock.scale.x = overlap / originalWidth;
   movingBlock.position.x -= delta / 2;
   stack.push(movingBlock);
 }
